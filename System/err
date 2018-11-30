@@ -1,0 +1,5 @@
+test_memory.cpp:1:27: fatal error: IO/cMemoryMgr.h: No such file or directory
+ #include "IO/cMemoryMgr.h"
+                           ^
+compilation terminated.
+make: *** [/test_memory.o] Error 1

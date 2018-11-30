@@ -1,0 +1,25 @@
+#include "UnitTest++.h"
+#include "YTL/container/cIntervalMap.h"
+
+using namespace yame;
+using namespace yame::container;
+
+namespace
+{
+
+TEST(EmptyIntervalMap)
+{
+    interval_map<unsigned int, char> foo('A');
+
+    foo.assign(13, 15, 'B');
+    foo.assign(10, 12, 'A');
+
+    std::map<unsigned int, char>::const_iterator itMap = foo.m_map.cbegin();
+    for(;itMap!=foo.m_map.cend();itMap++)
+    {
+        printf("tenim %d i %c\n", itMap->first, itMap->second);
+    }
+
+}
+
+}

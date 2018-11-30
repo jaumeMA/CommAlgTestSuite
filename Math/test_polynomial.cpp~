@@ -1,0 +1,31 @@
+#include "UnitTest++.h"
+#include "Math/cPolynomial.h"
+
+namespace
+{
+
+TEST(EmptyPoly)
+{
+    core::math::cDynPoly<float> prova;
+
+    prova[0] = 1.f;
+    bool condition = prova.getSize() == 0;
+
+    printf("lalala");
+
+    CHECK_EQUAL(condition, true);
+}
+
+TEST(PolyAssignment)
+{
+    core::math::cDynPoly<float> prova;
+
+    prova[0] = 1.f;
+    bool condition = prova[0] == 1.f;
+
+    printf("lololo");
+
+    CHECK_EQUAL(condition, true);
+}
+
+}

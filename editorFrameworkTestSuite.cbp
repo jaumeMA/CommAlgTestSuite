@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="editorFrameworkTestSuite" />
+		<Option makefile="/home/marta/workspace/editorFrameworkTestSuite/Makefile" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<MakeCommands>
+			<Build command="$make -f $makefile build Mode=$target" />
+			<CompileFile command="$make -f $makefile $file" />
+			<Clean command="$make -f $makefile clean$target" />
+			<DistClean command="$make -f $makefile distclean$target" />
+			<AskRebuildNeeded command="$make -q -f $makefile $target" />
+			<SilentBuild command="$make -s -f $makefile $target" />
+		</MakeCommands>
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/editorFrameworkTestSuite" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="g49" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-g" />
+					<Add directory="/usr/include/unittest++" />
+					<Add directory="/home/marta/workspace/editorFramework" />
+					<Add directory="/home/marta/workspace/editorFramework/Audio" />
+					<Add directory="/home/marta/workspace/editorFramework/YTL" />
+					<Add directory="/home/marta/workspace/editorFramework/Utils" />
+					<Add directory="/home/marta/workspace/editorFramework/IO" />
+				</Compiler>
+				<Linker>
+					<Add library="/usr/lib/libUnitTest++.a" />
+					<Add library="/home/marta/workspace/editorFramework/libEditorFramework.so" />
+				</Linker>
+				<MakeCommands>
+					<Build command="$make rebuild Mode=$target" />
+					<CompileFile command="$make -f $makefile $file" />
+					<Clean command="$make -f $makefile clean_all" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make rebuild Mode=$target" />
+					<SilentBuild command="$make -s -f $makefile build Mode=$target" />
+				</MakeCommands>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/editorFrameworkTestSuite" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<MakeCommands>
+					<Build command="$make -f $makefile build Mode=$target" />
+					<CompileFile command="$make -f $makefile $file" />
+					<Clean command="$make -f $makefile clean$target" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Math/test_math.cpp" />
+		<Unit filename="Math/test_numbers.cpp" />
+		<Unit filename="Math/test_polynomial.cpp" />
+		<Unit filename="Math/test_vectorSpace.cpp" />
+		<Unit filename="System/test_file.cpp" />
+		<Unit filename="System/test_file_stream.cpp" />
+		<Unit filename="System/test_memory.cpp" />
+		<Unit filename="YTL/test_algorithm.cpp" />
+		<Unit filename="YTL/test_array.cpp" />
+		<Unit filename="YTL/test_bitset.cpp" />
+		<Unit filename="YTL/test_function.cpp" />
+		<Unit filename="YTL/test_iterable.cpp" />
+		<Unit filename="YTL/test_map.cpp" />
+		<Unit filename="YTL/test_message_queue.cpp" />
+		<Unit filename="YTL/test_queue.cpp" />
+		<Unit filename="YTL/test_rope.cpp" />
+		<Unit filename="YTL/test_signals.cpp" />
+		<Unit filename="YTL/test_smartPtr.cpp" />
+		<Unit filename="YTL/test_stack.cpp" />
+		<Unit filename="YTL/test_string.cpp" />
+		<Unit filename="YTL/test_trie.cpp" />
+		<Unit filename="YTL/test_tuple.cpp" />
+		<Unit filename="YTL/test_unorderedMap.cpp" />
+		<Unit filename="YTL/test_view.cpp" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

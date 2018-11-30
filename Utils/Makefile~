@@ -1,0 +1,33 @@
+CXX=/usr/bin/g++-4.8
+CC=/usr/bin/gcc-4.8
+LINKER=/usr/bin/g++-4.8
+
+Mode?=Debug
+
+ifeq ($(Mode),Debug)
+CC_FLAGS=-std=c++0x -g -O0
+else
+CC_FLAGS=-std=c++0x
+endif
+
+LIB_DIR = /usr/local/lib:/usr/lib:/usr/lib/i386-linux-gnu
+SRC_DIR = .
+SRC_FILES = ${SRC_DIR}/test_memory.cpp
+OBJ_DIR =${BIN_DIR}
+OBJ_FILES = ${OBJ_DIR}/test_memory.o
+LOCAL_INCLUDE_DIR=${INCLUDE_DIR}
+
+#targets for full compilation chain
+${OBJ_DIR}/%.o: ${SRC_DIR}/%.cpp
+	${CXX} ${LOCAL_INCLUDE_DIR} -fpic -c ${CC_FLAGS} $< -o $@
+
+BIN: ${OBJ_FILES}
+
+clean_obj:
+	rm -rf ${OBJ_SUBDIRS}
+
+clean_all: clean_obj
+
+build: BIN
+
+rebuild: clean_all build
