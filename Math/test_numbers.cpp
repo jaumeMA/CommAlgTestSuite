@@ -30,7 +30,7 @@ TEST(ZpNumberDeclaration)
 }
 TEST(RationalNumberConstruction)
 {
-    yame::math::Rational foo(10, 12);
+    yame::math::Rational foo = yame::math::Rational(10, 12);
 
     CHECK_EQUAL(true, foo.numerator() == 10);
     CHECK_EQUAL(true, foo.denominator() == 12);
