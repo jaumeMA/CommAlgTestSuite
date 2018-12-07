@@ -16,9 +16,14 @@ TEST(RealDerivative)
     FR2 prova1;
     FR2 prova2 = prova1;
     FR2 planeFunc = (FR2::x_0 * FR2::x_0 * FR2::x_0 + FR2::x_1 * FR2::x_1) + FR2::x_1 * FR2::x_1 * (FR2::x_0 + FR2::x_0) + (FR2::x_1 * FR2::x_0 + FR2::x_1*(FR2::x_0 + FR2::x_1 * FR2::x_0)) * FR2::x_0;
-    yame::math::Real planeFuncRes = planeFunc.eval(Real(2.f), Real(3.f));
-    printf("Plane Func: %f\n", planeFuncRes.get_raw());
+    F<R2,R2> vectorProva = {FR2::x_0 * FR2::x_0, FR2::x_1 * FR2::x_1 * (FR2::x_0 + FR2::x_0)};
+    yame::math::R1 planeFuncRes = planeFunc.eval(Real(2.f), Real(3.f));
+    printf("Plane Func: %f\n", planeFuncRes[0].get_raw());
 
+    F<R2,R1> vectorProvaSpec = vectorProva(Real(3.f),yame::mpl::place_arg);
+
+    F<R2,R1> vectorProvaSpecDer = yame::math::derivative(vec1r(1.f), vectorProvaSpec);
+    yame::container::cTupla<F<R2,R2>, 2> vectorProvaDerDir = yame::math::derivative<0,1>(vectorProva);
     yame::container::cTupla<FR2, 2> planeFuncDerDir = yame::math::derivative<0,1>(planeFunc);
     FR2 planeFuncDer = yame::math::derivative(vec2r(1.f, 1.f), planeFunc);
 
