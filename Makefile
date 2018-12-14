@@ -15,7 +15,7 @@ LIBRARY_PATH:=$(foreach MODULE,${MODULES},:$(FRAMEWORK_DIR)/$(MODULE))
 export LD_LIBRARY_PATH=${LIBRARY_PATH}
 
 LIB_DIR = /usr/local/lib:/usr/lib:/usr/lib/i386-linux-gnu
-LIB = ${LIBRARY_MODULES} -lSDL -lGLESv2 -lopenal -lvorbisenc -lvorbisfile -lncurses -lfreetype -lEGL -lXxf86vm -lXext -lX11 -lUnitTest++ -lpthread
+LIB = ${LIBRARY_MODULES} -lUnitTest++ -lpthread
 SRC_DIR = ${LOCAL_DIR}/.
 INC_DIR = ${LOCAL_DIR}/.
 OBJ_DIR = ${BIN_DIR}
