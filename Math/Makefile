@@ -1,8 +1,8 @@
 LIB_DIR = /usr/local/lib:/usr/lib:/usr/lib/i386-linux-gnu
 SRC_DIR = .
-SRC_FILES = ${SRC_DIR}/test_numbers.cpp ${SRC_DIR}/test_vectorSpace.cpp ${SRC_DIR}/test_polynomial.cpp ${SRC_DIR}/test_math.cpp
+SRC_FILES = ${SRC_DIR}/test_numbers.cpp ${SRC_DIR}/test_vectorSpace.cpp ${SRC_DIR}/test_affine.cpp ${SRC_DIR}/test_polynomial.cpp ${SRC_DIR}/test_math.cpp
 OBJ_DIR =${BIN_DIR}
-OBJ_FILES = ${OBJ_DIR}/test_numbers.o ${OBJ_DIR}/test_vectorSpace.o ${OBJ_DIR}/test_polynomial.o ${OBJ_DIR}/test_math.o
+OBJ_FILES = ${OBJ_DIR}/test_numbers.o ${OBJ_DIR}/test_vectorSpace.o ${OBJ_DIR}/test_affine.o ${OBJ_DIR}/test_polynomial.o ${OBJ_DIR}/test_math.o
 LOCAL_INCLUDE_DIR=${INCLUDE_DIR}
 
 #targets for full compilation chain

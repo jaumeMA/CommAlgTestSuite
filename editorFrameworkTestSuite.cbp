@@ -83,6 +83,7 @@
 		<Unit filename="YTL/test_iterable.cpp" />
 		<Unit filename="YTL/test_map.cpp" />
 		<Unit filename="YTL/test_message_queue.cpp" />
+		<Unit filename="YTL/test_parameter_pack.cpp" />
 		<Unit filename="YTL/test_queue.cpp" />
 		<Unit filename="YTL/test_rope.cpp" />
 		<Unit filename="YTL/test_signals.cpp" />

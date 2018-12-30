@@ -114,13 +114,6 @@ TEST(MapViewRebind)
     prova1[4] = 4;
     prova1[5] = 5;
 
-    prova1[0] = 6;
-    prova1[1] = 7;
-    prova1[2] = 8;
-    prova1[3] = 9;
-    prova1[4] = 10;
-    prova1[5] = 11;
-
     map_view<int,int> mapView(prova1);
 
     map_view<int,int>::iterator_type itProva = mapView.begin();
@@ -128,6 +121,13 @@ TEST(MapViewRebind)
     {
         CHECK_EQUAL(mapIndex,itProva->second);
     }
+
+    prova2[0] = 6;
+    prova2[1] = 7;
+    prova2[2] = 8;
+    prova2[3] = 9;
+    prova2[4] = 10;
+    prova2[5] = 11;
 
     mapView = prova2;
 

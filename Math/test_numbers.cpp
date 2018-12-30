@@ -67,7 +67,7 @@ TEST(RationalNumberAssignment)
 {
     yame::math::Rational foo;
 
-    foo = yame::math::rationalPair(10, 12);
+    foo = yame::math::Rational(10, 12);
 
     CHECK_EQUAL(true, foo.numerator() == 10);
     CHECK_EQUAL(true, foo.denominator() == 12);
@@ -84,7 +84,7 @@ TEST(ComplexNumberAssignment)
 {
     yame::math::Complex foo;
 
-    foo = yame::math::complexPair(5.f, 6.f);
+    foo = yame::math::Complex(5.f, 6.f);
 
     CHECK_EQUAL(true, foo.real() == 5.f);
     CHECK_EQUAL(true, foo.imag() == 6.f);
@@ -93,7 +93,7 @@ TEST(QuaternionNumberAssignment)
 {
     yame::math::Quaternion foo;
 
-    foo = yame::math::quaternionQuartet(-15.f, 1.f, 0.f, 10.f);
+    foo = yame::math::Quaternion(-15.f, 1.f, 0.f, 10.f);
 
     CHECK_EQUAL(true, foo.n_part() == -15.f);
     CHECK_EQUAL(true, foo.i_part() == 1.f);
