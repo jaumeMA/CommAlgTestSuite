@@ -16,16 +16,16 @@ TEST(RealDerivative)
     using namespace yame::math;
     VFR2 prova1;
     VFR2 prova2 = prova1;
-    VFR2 planeFunc = (2.f * VFR2::x_0 * VFR2::x_0 * VFR2::x_0 + VFR2::x_1 * VFR2::x_1) + VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0) + (VFR2::x_1 * VFR2::x_0 + VFR2::x_1*(VFR2::x_0 + VFR2::x_1 * VFR2::x_0)) * VFR2::x_0;
+    VFR2 planeFunc = VFR2::x_0 * VFR2::x_0;
+    auto nestedFunc = planeFunc.getValue();
     VF<R2,R2> vectorProva = {VFR2::x_0 * VFR2::x_0, VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0)};
     yame::math::R1 planeFuncRes = planeFunc.eval(Real(2.f), Real(3.f));
     printf("Plane Func: %f\n", planeFuncRes[0].get_raw());
 
-    detail::linear_function<Real,R2> linearProva = 2.f * (VFR2::x_0 + VFR2::x_1 + 5.f) + VFR2::x_0 + 4.5f * VFR2::x_1 + 7.4f;
-    rvector<2+1> as_vector = linearProva.as_vector();
+    detail::linear_function<Real,R2> linearProva = 2.f * (VFR2::x_0 + VFR2::x_1) + VFR2::x_0 + 4.5f * VFR2::x_1;
+    rvector<2> as_vector = linearProva.as_vector();
     double as_vector_0 = as_vector[0].get_raw();
     double as_vector_1 = as_vector[1].get_raw();
-    double as_vector_2 = as_vector[2].get_raw();
     rvector<3> provaVector(0.f,
                            1.f,
                            2.f);
@@ -39,16 +39,19 @@ TEST(RealDerivative)
                              4.f,5.f);
     LF<R3,R2> provaLinearMatrixFunc(provaMatrix);
 
-    rmatrix<3,2+1> provaLinearMatrixFuncMatrix = provaLinearMatrixFunc.as_matrix();
+    rmatrix<3,2> provaLinearMatrixFuncMatrix = provaLinearMatrixFunc.as_matrix();
+    double as_matrix_0_0 = provaLinearMatrixFuncMatrix[0][0].get_raw();
+    double as_matrix_0_1 = provaLinearMatrixFuncMatrix[0][1].get_raw();
+    double as_matrix_1_0 = provaLinearMatrixFuncMatrix[1][0].get_raw();
+    double as_matrix_1_1 = provaLinearMatrixFuncMatrix[1][1].get_raw();
+    double as_matrix_2_0 = provaLinearMatrixFuncMatrix[2][0].get_raw();
+    double as_matrix_2_1 = provaLinearMatrixFuncMatrix[2][1].get_raw();
     CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[0][0] == 0.f);
     CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[0][1] == 1.f);
-    CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[0][2] == 0.f);
     CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[1][0] == 2.f);
     CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[1][1] == 3.f);
-    CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[1][2] == 0.f);
     CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[2][0] == 4.f);
     CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[2][1] == 5.f);
-    CHECK_EQUAL(true, provaLinearMatrixFuncMatrix[2][2] == 0.f);
 
     R3 res = provaLinearMatrixFunc(5.f,1.f);
     CHECK_EQUAL(true, res[0] == 1.f);
@@ -72,17 +75,17 @@ TEST(TaylorSeries)
 {
     using namespace yame::math;
 
-    VFR2 planeFunc = (VFR2::x_0 * VFR2::x_0 * VFR2::x_0 + VFR2::x_1 * VFR2::x_1) + VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0) + (VFR2::x_1 * VFR2::x_0 + VFR2::x_1*(VFR2::x_0 + VFR2::x_1 * VFR2::x_0)) * VFR2::x_0;
-    VFR3 baseFunc1 = VFR3::x_0 * VFR3::x_1;
-    VFR3 baseFunc2 = VFR3::x_1 + VFR3::x_2;
-    VFR2 expOverPlane = ExpReal(planeFunc);
-    VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
-    VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
-    real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
-    real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
-
-    yame::container::string polyAsStr1 = yame::format(poly1);
-    printf("El desenvolupament de taylor es: %s\n",polyAsStr1.getStr());
+//    VFR2 planeFunc = (VFR2::x_0 * VFR2::x_0 * VFR2::x_0 + VFR2::x_1 * VFR2::x_1) + VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0) + (VFR2::x_1 * VFR2::x_0 + VFR2::x_1*(VFR2::x_0 + VFR2::x_1 * VFR2::x_0)) * VFR2::x_0;
+//    VFR3 baseFunc1 = VFR3::x_0 * VFR3::x_1;
+//    VFR3 baseFunc2 = VFR3::x_1 + VFR3::x_2;
+//    VFR2 expOverPlane = ExpReal(planeFunc);
+//    VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
+//    VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
+//    real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
+//    real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
+//
+//    yame::container::string polyAsStr1 = yame::format(poly1);
+//    printf("El desenvolupament de taylor es: %s\n",polyAsStr1.getStr());
 }
 
 }

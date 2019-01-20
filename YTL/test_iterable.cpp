@@ -4,6 +4,7 @@
 #include "YTL/container/cMap.h"
 #include "YTL/container/cString.h"
 #include "YTL/container/cIterable.h"
+#include "YTL/container/cPackIterable.h"
 
 using namespace yame::container;
 
@@ -1326,6 +1327,17 @@ TEST(ConstRandomAccessInterIterable)
     foo2.push_back(16);
     foo2.push_back(17);
     foo2.push_back(18);
+
+    cConstRandomAccessPackIterable<int&,int&> arraysPackIterable(foo1,foo2);
+
+    typename cConstRandomAccessPackIterable<int&,int&>::iterator_type itPack = arraysPackIterable.begin();
+    for(size_t index = 0;itPack!=arraysPackIterable.end();++itPack)
+    {
+        parameter_pack<int&,int&> currValue = *itPack;
+        const int& firstValue = currValue.getValue<0>();
+        const int& secondValue = currValue.getValue<1>();
+        ++index;
+    }
 
     cConstRandomAccessInterIterable<2, int&> convertedIterable(foo1,foo2);
 

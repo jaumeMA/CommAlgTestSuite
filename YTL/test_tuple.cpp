@@ -48,7 +48,7 @@ TEST(TupleIteration)
 
     for(size_t counter=0;itTupla!=foo.cend();itTupla++,counter++)
     {
-        CHECK_EQUAL(foo[counter/2][counter%2], *itTupla);
+        CHECK_EQUAL(foo[counter/2][counter%2], (*itTupla).second);
     }
 }
 
