@@ -26,12 +26,25 @@ TEST(AffineDecl)
 
 TEST(AffineDisplacement)
 {
-    AR1 ar1(0.5f);
     vec1r vec1(0.5f);
+    AR1 ar1(vec1);
 
     ar1 = ar1 + vec1;
 
     CHECK_EQUAL(true, ar1 == 1.f);
+}
+
+TEST(AffineCompare)
+{
+    vec1r orig1(0.5f);
+    vec1r vec1(1.5f);
+    AR1 ar1(orig1,vec1);
+
+    vec1r orig2(2.5f);
+    vec1r vec2(-0.5f);
+    AR1 ar2(orig2,vec2);
+
+    CHECK_EQUAL(true, ar1 == ar2);
 }
 
 }

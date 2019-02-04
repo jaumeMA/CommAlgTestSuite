@@ -75,17 +75,17 @@ TEST(TaylorSeries)
 {
     using namespace yame::math;
 
-//    VFR2 planeFunc = (VFR2::x_0 * VFR2::x_0 * VFR2::x_0 + VFR2::x_1 * VFR2::x_1) + VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0) + (VFR2::x_1 * VFR2::x_0 + VFR2::x_1*(VFR2::x_0 + VFR2::x_1 * VFR2::x_0)) * VFR2::x_0;
-//    VFR3 baseFunc1 = VFR3::x_0 * VFR3::x_1;
-//    VFR3 baseFunc2 = VFR3::x_1 + VFR3::x_2;
-//    VFR2 expOverPlane = ExpReal(planeFunc);
-//    VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
-//    VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
-//    real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
-//    real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
-//
-//    yame::container::string polyAsStr1 = yame::format(poly1);
-//    printf("El desenvolupament de taylor es: %s\n",polyAsStr1.getStr());
+    VFR2 planeFunc = (VFR2::x_0 * VFR2::x_0 * VFR2::x_0 + VFR2::x_1 * VFR2::x_1) + VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0) + (VFR2::x_1 * VFR2::x_0 + VFR2::x_1*(VFR2::x_0 + VFR2::x_1 * VFR2::x_0)) * VFR2::x_0;
+    VFR3 baseFunc1 = VFR3::x_0 * VFR3::x_1;
+    VFR3 baseFunc2 = VFR3::x_1 + VFR3::x_2;
+    VFR2 expOverPlane = ExpReal(planeFunc);
+    VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
+    VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
+    real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
+    real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
+
+    yame::container::string polyAsStr1 = yame::format(poly1);
+    printf("El desenvolupament de taylor es: %s\n",polyAsStr1.getStr());
 }
 
 }
