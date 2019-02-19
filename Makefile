@@ -3,7 +3,8 @@ include ./compiler.mk
 LOCAL_DIR = ${PWD}
 FRAMEWORK_DIR=${LOCAL_DIR}/../editorFramework
 # in order to prevent from static initialization fiasco, this order is important
-MODULES:=YTL System Utils Math
+MODULES:= YTL System Utils Math
+#YTL System Utils Math
 #System Utils Math
 
 LIBRARY_MODULES:=$(foreach MODULE,${MODULES},$(FRAMEWORK_DIR)/$(MODULE)/lib$(MODULE)${LIBRARY_SUFFIX}.so)

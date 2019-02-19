@@ -19,6 +19,9 @@ TEST(Vec2rAccess)
     vec2[0] = 1.f;
     vec2[1] = yame::math::Real(2.f);
 
+    const double vec0d = vec2[0].get_raw();
+    const double vec1d = vec2[1].get_raw();
+
     CHECK_EQUAL(true, vec2[0] == yame::math::Real(1.f));
     CHECK_EQUAL(true, vec2[1] == yame::math::Real(2.f));
 }

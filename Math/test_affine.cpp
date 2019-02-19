@@ -3,6 +3,7 @@
 #include "Math/cAffineSpace.h"
 #include "Math/cVectorSpace.h"
 #include "Math/cMathOps.h"
+#include "Math/cAffineFunctionSpace.h"
 
 namespace
 {
@@ -45,6 +46,11 @@ TEST(AffineCompare)
     AR1 ar2(orig2,vec2);
 
     CHECK_EQUAL(true, ar1 == ar2);
+}
+
+TEST(EmptyAffineFunction)
+{
+    AFR1 afr1;
 }
 
 }
