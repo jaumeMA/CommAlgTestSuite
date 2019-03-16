@@ -14,12 +14,12 @@ typedef yame::math::R3 vec3r;
 TEST(RealDerivative)
 {
     using namespace yame::math;
-    VFR2 prova1;
-    VFR2 prova2 = prova1;
-    VFR2 planeFunc = VFR2::x_0 * VFR2::x_0;
+    yame::math::VFR2 prova1;
+    yame::math::VFR2 prova2 = prova1;
+    yame::math::VFR2 planeFunc = VFR2::x_0 * VFR2::x_0;
     auto nestedFunc = planeFunc.getValue();
-    VF<R2,R2> vectorProva = {VFR2::x_0 * VFR2::x_0, VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0)};
-    yame::math::R1 planeFuncRes = planeFunc.eval(Real(2.f), Real(3.f));
+    yame::math::VF<R2,R2> vectorProva = {VFR2::x_0 * VFR2::x_0, VFR2::x_1 * VFR2::x_1 * (VFR2::x_0 + VFR2::x_0)};
+    yame::math::R1 planeFuncRes = eval(planeFunc,Real(2.f), Real(3.f));
     printf("Plane Func: %f\n", planeFuncRes[0].get_raw());
 
     detail::linear_function<Real,R2> linearProva = 2.f * (VFR2::x_0 + VFR2::x_1) + VFR2::x_0 + 4.5f * VFR2::x_1;
@@ -64,8 +64,8 @@ TEST(RealDerivative)
     yame::container::cTupla<VFR2, 2> planeFuncDerDir = yame::math::derivative<0,1>(planeFunc);
     VFR2 planeFuncDer = yame::math::derivative(vec2r(1.f, 1.f), planeFunc);
 
-    yame::container::string planeFuncDerStr = yame::format(planeFuncDer.eval(Real(1.f),Real(1.f)));
-    yame::container::string vectorProvaStr = yame::format(vectorProva.eval(Real(1.f),Real(1.f)));
+    yame::container::string planeFuncDerStr = yame::format(eval(planeFuncDer,Real(1.f),Real(1.f)));
+    yame::container::string vectorProvaStr = yame::format(eval(vectorProva,Real(1.f),Real(1.f)));
 
     printf("derivada plane der %s\n", planeFuncDerStr.getStr());
     printf("derivada vectorProva %s\n", vectorProvaStr.getStr());
@@ -82,7 +82,7 @@ TEST(TaylorSeries)
     VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
     VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
     real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
-    real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
+    //real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
 
     yame::container::string polyAsStr1 = yame::format(poly1);
     printf("El desenvolupament de taylor es: %s\n",polyAsStr1.getStr());

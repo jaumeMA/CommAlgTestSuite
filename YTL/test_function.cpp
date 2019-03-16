@@ -46,7 +46,7 @@ TEST(NullFunction)
     printf("result: %d\n", result);
 
     yame::ytl::function<int(int,float,int)> specFoo3 = fooFunction * fooFunction;
-    result = specFoo3.eval(0, 1.5f, 2);
+    result = yame::ytl::eval(specFoo3,0, 1.5f, 2);
     printf("result: %d\n", result);
 }
 
@@ -72,7 +72,7 @@ TEST(DirectExecution)
 {
     yame::ytl::function<int(int,float,int)> fooFunction([](int a, float b, int c){return a + int(b) + c;});
 
-    CHECK_EQUAL(8, fooFunction.eval(3,2.5,3));
+    CHECK_EQUAL(8, yame::ytl::eval(fooFunction,3,2.5,3));
 }
 
 TEST(CurryingFunction)
@@ -83,7 +83,7 @@ TEST(CurryingFunction)
 
     curriedFunction << fooFunction;
 
-    CHECK_EQUAL(8, curriedFunction.eval(3).eval(2.5).eval(3));
+    CHECK_EQUAL(8, yame::ytl::eval(yame::ytl::eval(yame::ytl::eval(curriedFunction,3),2.5),3));
 }
 
 }
