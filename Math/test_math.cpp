@@ -80,8 +80,7 @@ TEST(TaylorSeries)
     VFR3 baseFunc2 = VFR3::x_1 + VFR3::x_2;
     VFR2 expOverPlane = ExpReal(planeFunc);
     VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
-    VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
-    VFR3 expOverPlaneR3 = ExpReal(otherFunc);
+    VFR3 expOverPlaneR3 = ExpReal(planeFunc(baseFunc1,baseFunc2));
     real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
     real_polynomial poly2 = taylorSeries(expOverPlaneR3, vec3r(0.f,0.f,0.f));
 
