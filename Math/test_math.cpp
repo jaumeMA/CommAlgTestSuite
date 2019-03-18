@@ -81,11 +81,14 @@ TEST(TaylorSeries)
     VFR2 expOverPlane = ExpReal(planeFunc);
     VFR1 otherFunc1 = 1.f / (1.f - VFR1::x_0);
     VFR3 otherFunc = planeFunc(baseFunc1,baseFunc2);
+    VFR3 expOverPlaneR3 = ExpReal(otherFunc);
     real_polynomial poly1 = taylorSeries(otherFunc1, vec1r(0.f));
-    //real_polynomial poly2 = taylorSeries(otherFunc, vec3r(1.f,2.f,3.f));
+    real_polynomial poly2 = taylorSeries(expOverPlaneR3, vec3r(0.f,0.f,0.f));
 
     yame::container::string polyAsStr1 = yame::format(poly1);
-    printf("El desenvolupament de taylor es: %s\n",polyAsStr1.getStr());
+    printf("El desenvolupament de taylor 1 es: %s\n",polyAsStr1.getStr());
+    yame::container::string polyAsStr2 = yame::format(poly2);
+    printf("El desenvolupament de taylor 2 es: %s\n",polyAsStr2.getStr());
 }
 
 }

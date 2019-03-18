@@ -53,4 +53,10 @@ TEST(EmptyAffineFunction)
     AFR1 afr1;
 }
 
+TEST(AffineFunction)
+{
+    AFR1 afr1 = { [](Real i_point) -> vec1r { return i_point; }, 2.f * VFR1::x_0 };
+    afr1 = AFR1{ [](Real i_point) -> vec1r { return i_point; }, 2.f * VFR1::x_0 };
+}
+
 }
