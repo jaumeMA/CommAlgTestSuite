@@ -83,7 +83,7 @@ TEST(NonStaticMemberFunctionNonCopiableDataExecute)
     FooClass foo;
     yame::ytl::signal<void(int, float, int),SignalExecKey> fooSignal;
 
-    yame::ytl::unique_ref<int> fooData = yame::ytl::make_unique_ref<int>(20);
+    yame::ytl::unique_ref<int> fooData = yame::ytl::make_unique<int>(20);
 
     fooSignal.connect(&foo, &FooClass::nonCopiableData, _arg, _arg, _arg, yame::mpl::move(fooData));
 

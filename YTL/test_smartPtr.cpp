@@ -1,6 +1,6 @@
 #include "UnitTest++.h"
-#include "YTL/types/smartPtr/lent_ptr.h"
-#include "YTL/types/smartPtr/unique_ptr.h"
+#include "YTL/types/smartPtr/lent_ref.h"
+#include "YTL/types/smartPtr/unique_ref.h"
 #include "Utils/rtti/rtti.h"
 #include "YTL/types/smartPtr/ptr_utils.h"
 #include <memory>
@@ -28,7 +28,7 @@ TEST(UniquePtrConstr)
 {
     int a = 10;
     StackDeleter stackDeleter;
-    yame::ytl::unique_ptr<int> foo(&a, &stackDeleter);
+    yame::ytl::unique_ref<int> foo(&a, &stackDeleter);
 
     CHECK_EQUAL(10, *foo);
 }
@@ -297,6 +297,7 @@ public:
     , a(100)
     , b(200.5f)
     , d('c')
+    , e(75)
     {
     }
 
@@ -317,22 +318,40 @@ private:
     int a;
     float b;
     char d;
+    int e;
 
-    PUBLISH_RTTI_TYPE_MEMBERS(C,a,b,d)
+    PUBLISH_RTTI_TYPE_MEMBERS(C,a,b,d,e)
 
     PUBLISH_RTTI_TYPE_INFO(C)
 };
 
+struct c_member_visitor : public yame::ytl::static_visitor<void>
+{
+public:
+    void operator()(const yame::container::cPair<yame::container::string,int&>& i_value) const
+    {
+        printf("receving value int of %s: %d\n",i_value.first.getStr(),i_value.second);
+    }
+    void operator()(const yame::container::cPair<yame::container::string,float&>& i_value) const
+    {
+        printf("receving value float of %s: %f\n",i_value.first.getStr(),i_value.second);
+    }
+    void operator()(const yame::container::cPair<yame::container::string,char&>& i_value) const
+    {
+        printf("receving value char of %s: %c\n",i_value.first.getStr(),i_value.second);
+    }
+};
+
 TEST(MakeUniquePtr)
 {
-    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique_ref<int>(10);
+    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique<int>(10);
 
     CHECK_EQUAL(10, *foo);
 }
 
 TEST(MakeUniqueRef)
 {
-    yame::ytl::unique_ref<int> foo = yame::ytl::make_unique_ref<int>(10);
+    yame::ytl::unique_ref<int> foo = yame::ytl::make_unique<int>(10);
 
     CHECK_EQUAL(10, *foo);
 }
@@ -340,7 +359,7 @@ TEST(MakeUniqueRef)
 TEST(UniquePtrAssign)
 {
     yame::ytl::unique_ptr<int> foo1;
-    yame::ytl::unique_ptr<int> foo2 = yame::ytl::make_unique_ref<int>(10);
+    yame::ytl::unique_ptr<int> foo2 = yame::ytl::make_unique<int>(10);
 
     CHECK_EQUAL(10, *foo2);
     CHECK_EQUAL(true, foo1 == null_ptr);
@@ -353,7 +372,7 @@ TEST(UniquePtrAssign)
 
 TEST(UniquePtrPromotion)
 {
-    yame::ytl::unique_ptr<int> foo1 = yame::ytl::make_unique_ref<int>(10);
+    yame::ytl::unique_ptr<int> foo1 = yame::ytl::make_unique<int>(10);
 
     CHECK_EQUAL(10, *foo1);
 
@@ -365,8 +384,8 @@ TEST(UniquePtrPromotion)
 
 TEST(UniqueRefAssign)
 {
-    yame::ytl::unique_ref<int> foo1 = yame::ytl::make_unique_ref<int>(10);
-    yame::ytl::unique_ref<int> foo2 = yame::ytl::make_unique_ref<int>(20);
+    yame::ytl::unique_ref<int> foo1 = yame::ytl::make_unique<int>(10);
+    yame::ytl::unique_ref<int> foo2 = yame::ytl::make_unique<int>(20);
 
     CHECK_EQUAL(10, *foo1);
     CHECK_EQUAL(20, *foo2);
@@ -379,8 +398,8 @@ TEST(UniqueRefAssign)
 
 TEST(UniquePtrSwap)
 {
-    yame::ytl::unique_ptr<int> foo1 = yame::ytl::make_unique_ref<int>(10);
-    yame::ytl::unique_ptr<int> foo2 = yame::ytl::make_unique_ref<int>(20);
+    yame::ytl::unique_ptr<int> foo1 = yame::ytl::make_unique<int>(10);
+    yame::ytl::unique_ptr<int> foo2 = yame::ytl::make_unique<int>(20);
 
     CHECK_EQUAL(10, *foo1);
     CHECK_EQUAL(20, *foo2);
@@ -393,7 +412,7 @@ TEST(UniquePtrSwap)
 
 TEST(UniquePtrAssignNull)
 {
-    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique_ref<int>(10);
+    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique<int>(10);
 
     CHECK_EQUAL(10, *foo);
 
@@ -442,7 +461,7 @@ TEST(TypeInfoTest)
 
 TEST(UniquePtrCtoC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C1> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C1> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
     CHECK_EQUAL(8,foo1->getC8());
@@ -466,35 +485,41 @@ TEST(UniquePtrCtoC2DynamicCast)
     const C* __foo1 = nullptr;
     const C2* __foo2 = reinterpret_cast<const C2*>(__foo1);
 
-    yame::ytl::unique_ptr<C2> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C2> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(11,foo1->getC11());
     CHECK_EQUAL(12,foo1->getC12());
     CHECK_EQUAL(13,foo1->getC13());
     CHECK_EQUAL(14,foo1->getC14());
 
-    yame::ytl::unique_ptr<C> foo2 = yame::ytl::dynamic_unique_cast<C>(yame::mpl::move(foo1));
+    if(yame::ytl::unique_ptr<C> foo2 = yame::ytl::dynamic_unique_cast<C>(yame::mpl::move(foo1)))
+    {
+        yame::ytl::unique_ref<C> foo2Ref = yame::ytl::promote_to_ref(yame::mpl::move(foo2));
 
-    int& aValue = yame::rtti::access<int>(foo2,"a");
-    float& bValue = yame::rtti::access<float>(foo2,"b");
-    char& dValue = yame::rtti::access<char>(foo2,"d");
+        int& aValue = yame::rtti::access<int>(foo2Ref,"a");
+        float& bValue = yame::rtti::access<float>(foo2Ref,"b");
+        char& dValue = yame::rtti::access<char>(foo2Ref,"d");
 
-    aValue += 10;
+        aValue += 10;
 
-    CHECK_EQUAL(110,foo2->getA());
-    CHECK_EQUAL(7,foo2->getC7());
-    CHECK_EQUAL(8,foo2->getC8());
-    CHECK_EQUAL(9,foo2->getC9());
-    CHECK_EQUAL(10,foo2->getC10());
-    CHECK_EQUAL(11,foo2->getC11());
-    CHECK_EQUAL(12,foo2->getC12());
-    CHECK_EQUAL(13,foo2->getC13());
-    CHECK_EQUAL(14,foo2->getC14());
+        c_member_visitor cVisitor;
+        yame::rtti::visit_members(foo2Ref,cVisitor);
+
+        CHECK_EQUAL(110,foo2Ref->getA());
+        CHECK_EQUAL(7,foo2Ref->getC7());
+        CHECK_EQUAL(8,foo2Ref->getC8());
+        CHECK_EQUAL(9,foo2Ref->getC9());
+        CHECK_EQUAL(10,foo2Ref->getC10());
+        CHECK_EQUAL(11,foo2Ref->getC11());
+        CHECK_EQUAL(12,foo2Ref->getC12());
+        CHECK_EQUAL(13,foo2Ref->getC13());
+        CHECK_EQUAL(14,foo2Ref->getC14());
+    }
 }
 
 TEST(UniquePtrC3toC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C3> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C3> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
     CHECK_EQUAL(8,foo1->getC8());
@@ -509,7 +534,7 @@ TEST(UniquePtrC3toC1DynamicCast)
 
 TEST(UniquePtrC3toC2DynamicCast)
 {
-    yame::ytl::unique_ptr<C3> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C3> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
     CHECK_EQUAL(8,foo1->getC8());
@@ -524,7 +549,7 @@ TEST(UniquePtrC3toC2DynamicCast)
 
 TEST(UniquePtrC3toCDynamicCast)
 {
-    yame::ytl::unique_ptr<C3> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C3> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
     CHECK_EQUAL(8,foo1->getC8());
@@ -543,7 +568,7 @@ TEST(UniquePtrC3toCDynamicCast)
 
 TEST(UniquePtrC4toC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C4> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C4> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(9,foo1->getC9());
     CHECK_EQUAL(10,foo1->getC10());
@@ -558,7 +583,7 @@ TEST(UniquePtrC4toC1DynamicCast)
 
 TEST(UniquePtrC4toC2DynamicCast)
 {
-    yame::ytl::unique_ptr<C4> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C4> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(9,foo1->getC9());
     CHECK_EQUAL(10,foo1->getC10());
@@ -573,7 +598,7 @@ TEST(UniquePtrC4toC2DynamicCast)
 
 TEST(UniquePtrC5toC2DynamicCast)
 {
-    yame::ytl::unique_ptr<C5> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C5> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(11,foo1->getC11());
     CHECK_EQUAL(12,foo1->getC12());
@@ -588,7 +613,7 @@ TEST(UniquePtrC5toC2DynamicCast)
 
 TEST(UniquePtrC5toC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C5> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C5> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(11,foo1->getC11());
     CHECK_EQUAL(12,foo1->getC12());
@@ -603,7 +628,7 @@ TEST(UniquePtrC5toC1DynamicCast)
 
 TEST(UniquePtrC6toC2DynamicCast)
 {
-    yame::ytl::unique_ptr<C6> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C6> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(13,foo1->getC13());
     CHECK_EQUAL(14,foo1->getC14());
@@ -618,7 +643,7 @@ TEST(UniquePtrC6toC2DynamicCast)
 
 TEST(UniquePtrC6toC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C6> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C6> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(13,foo1->getC13());
     CHECK_EQUAL(14,foo1->getC14());
@@ -633,13 +658,9 @@ TEST(UniquePtrC6toC1DynamicCast)
 
 TEST(UniquePtrC7toC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
-
-    int res = yame::rtti::execute<int>(foo1,"getC7");
-
-    CHECK_EQUAL(7,res);
 
     yame::ytl::unique_ptr<C1> foo2 = yame::ytl::dynamic_unique_cast<C1>(yame::mpl::move(foo1));
 
@@ -651,7 +672,7 @@ TEST(UniquePtrC7toC1DynamicCast)
 
 TEST(UniquePtrC7toC6DynamicCast)
 {
-    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
 
@@ -663,7 +684,7 @@ TEST(UniquePtrC7toC6DynamicCast)
 
 TEST(UniquePtrC7toC14DynamicCast)
 {
-    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
 
@@ -674,7 +695,7 @@ TEST(UniquePtrC7toC14DynamicCast)
 
 TEST(UniquePtrC7toC10DynamicCast)
 {
-    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C7> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(7,foo1->getC7());
 
@@ -685,7 +706,7 @@ TEST(UniquePtrC7toC10DynamicCast)
 
 TEST(UniquePtrC13toC15DynamicCast)
 {
-    yame::ytl::unique_ptr<C13> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C13> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(13,foo1->getC13());
 
@@ -696,7 +717,7 @@ TEST(UniquePtrC13toC15DynamicCast)
 
 TEST(UniquePtrC14toC1DynamicCast)
 {
-    yame::ytl::unique_ptr<C14> foo1 = yame::ytl::make_unique_ref<C>(7,8,9,10,11,12,13,14);
+    yame::ytl::unique_ptr<C14> foo1 = yame::ytl::make_unique<C>(7,8,9,10,11,12,13,14);
 
     CHECK_EQUAL(14,foo1->getC14());
 
@@ -780,7 +801,7 @@ TEST(UniquePtrC14toC1DynamicCast)
 //
 //TEST(RefPtrReference)
 //{
-//    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique_ref<int>(10);
+//    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique<int>(10);
 //
 //    {
 //        yame::ytl::lent_ptr<int> refFoo = foo;
@@ -791,7 +812,7 @@ TEST(UniquePtrC14toC1DynamicCast)
 //
 //TEST(RefPtrPromotion)
 //{
-//    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique_ref<int>(10);
+//    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique<int>(10);
 //    yame::ytl::lent_ptr<int> refFoo1;
 //
 //    refFoo1 = foo;
@@ -914,7 +935,7 @@ TEST(UniquePtrC14toC1DynamicCast)
 //    typedef yame::ytl::lent_ptr<int> refInt;
 //    static const size_t maxIndex = 1000;
 //    refInt refFoo[maxIndex];
-//    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique_ref<int>(10);
+//    yame::ytl::unique_ptr<int> foo = yame::ytl::make_unique<int>(10);
 //
 //    {
 //        for(size_t refIndex=0;refIndex<maxIndex;refIndex++)

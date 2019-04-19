@@ -53,7 +53,7 @@ TEST(NullFunction)
 TEST(FunctionWithNonCopiableArgs)
 {
     yame::ytl::function<int(yame::ytl::unique_ref<int>&&)> fooFunction(&lalala);
-    yame::ytl::unique_ref<int> uniquePtr = yame::ytl::make_unique_ref<int>(10);
+    yame::ytl::unique_ref<int> uniquePtr = yame::ytl::make_unique<int>(10);
     static_assert(yame::mpl::is_type_constructible<yame::ytl::unique_ref<int>&&,decltype(yame::mpl::move(uniquePtr))>::value, "wtf");
     yame::ytl::function<int()> fooSpec = fooFunction(yame::mpl::move(uniquePtr));
 
