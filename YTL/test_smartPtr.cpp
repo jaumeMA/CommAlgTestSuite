@@ -328,17 +328,17 @@ private:
 struct c_member_visitor : public yame::ytl::static_visitor<void>
 {
 public:
-    void operator()(const yame::container::cPair<yame::container::string,int&>& i_value) const
+    void operator()(const yame::container::cPair<yame::container::string_view,int&>& i_value) const
     {
-        printf("receving value int of %s: %d\n",i_value.first.getStr(),i_value.second);
+        printf("receving value int of %s: %d\n",i_value.first.getData(),i_value.second);
     }
-    void operator()(const yame::container::cPair<yame::container::string,float&>& i_value) const
+    void operator()(const yame::container::cPair<yame::container::string_view,float&>& i_value) const
     {
-        printf("receving value float of %s: %f\n",i_value.first.getStr(),i_value.second);
+        printf("receving value float of %s: %f\n",i_value.first.getData(),i_value.second);
     }
-    void operator()(const yame::container::cPair<yame::container::string,char&>& i_value) const
+    void operator()(const yame::container::cPair<yame::container::string_view,char&>& i_value) const
     {
-        printf("receving value char of %s: %c\n",i_value.first.getStr(),i_value.second);
+        printf("receving value char of %s: %c\n",i_value.first.getData(),i_value.second);
     }
 };
 
